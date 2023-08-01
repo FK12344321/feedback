@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Feedback Form</title>
+</head>
+<body>
+    <h1>Feedback Form</h1>
+    <form id="feedbackForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br>
+
+        <label for="message">Message:</label><br>
+        <textarea id="message" name="message" rows="4" cols="50" required></textarea><br>
+
+        <button type="submit">Submit Feedback</button>
+    </form>
+
+    <script>
+        document.getElementById("feedbackForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            submitFeedback();
+        });
+
+        function submitFeedback() {
+            const form = document.getElementById("feedbackForm");
+            const formData = new FormData(form);
+            const url = "https://feedback.free.beeceptor.com/todos";
+
+            fetch(url, {
+                method: "POST",
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                return response.text();
+            })
+            .then(data => {
+                console.log("Feedback submitted successfully:", data);
+                // Optionally, you can add a success message or redirect to another page.
+            })
+            .catch(error => {
+                console.error("Error submitting feedback:", error);
+                // Optionally, you can show an error message to the user.
+            });
+        }
+    </script>
+</body>
+</html>
